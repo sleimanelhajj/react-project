@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 const port = 5000;
 
 const url =
-  "mongodb+srv://sleimanelhajj:4ZlYLHFmusQm1N3G@cluster0.jdeth.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://sleimanelhajj:<PASSWORD>@cluster0.jdeth.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const dbName = "jobsdb";
 let db;
 
@@ -159,6 +159,7 @@ app.put("/edit-job/:id", async (req, res) => {
     res.status(500).json({ message: "Server error, unable to update job." });
   }
 });
+
 app.listen(port, () => {
-  console.log("Server is running on port 5000");
+  console.log(`Server is running and accessible at port ${port}`);
 });
