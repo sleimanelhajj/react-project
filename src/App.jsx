@@ -40,15 +40,22 @@ const App = () => {
   };
 
   // Update Job
+  // ✅ **Ensure PUT method is used instead of POST**
   const updateJob = async (job) => {
-    const res = await fetch(`/api/jobs/${job.id}`, {
+    const res = await fetch(`http://localhost:5000/edit-job/${job.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(job),
     });
-    return;
+
+    if (!res.ok) {
+      console.error("Failed to update job");
+      return;
+    }
+
+    console.log("Job updated successfully!");
   };
 
   const router = createBrowserRouter(

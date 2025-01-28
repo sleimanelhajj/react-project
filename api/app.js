@@ -122,6 +122,43 @@ app.delete("/api/jobs/:id", async (req, res) => {
   }
 });
 
+// updating a job
+app.put("/edit-job/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid job ID format" });
+    }
+
+    const updatedJob = {
+      title: req.body.title,
+      type: req.body.type,
+      location: req.body.location,
+      description: req.body.description,
+      salary: req.body.salary,
+      company: {
+        name: req.body.company.name,
+        description: req.body.company.description,
+        contactEmail: req.body.company.contactEmail,
+        contactPhone: req.body.company.contactPhone,
+      },
+    };
+
+    const result = await db
+      .collection("jobs")
+      .updateOne({ _id: new ObjectId(id) }, { $set: updatedJob });
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    res.status(200).json({ message: "Job updated successfully" });
+  } catch (error) {
+    console.error("Error updating job:", error);
+    res.status(500).json({ message: "Server error, unable to update job." });
+  }
+});
 app.listen(port, () => {
   console.log("Server is running on port 5000");
 });
